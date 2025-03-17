@@ -50,6 +50,30 @@ ClipAI is a clipboard viewer and transformer application built using Tkinter. It
 
 ClipAI uses the 'clam' theme for a modern look. You can customize the UI by modifying the theme settings in the `ClipAI.py` file. The application uses the `ttk.Style` class to apply the theme and style the widgets. You can refer to the [Tkinter documentation](https://docs.python.org/3/library/tkinter.ttk.html#styling) for more information on how to customize the appearance of the widgets.
 
+## Adding New Prompts
+
+The `TRANSFORMATION_PROMPTS` dictionary in the `ClipAI.py` file is used to store the different transformation prompts that can be applied to the clipboard content. Each key in the dictionary represents a transformation type, and the corresponding value is the prompt template.
+
+### Step-by-Step Guide to Add New Prompts
+
+1. Open the `ClipAI.py` file in your preferred code editor.
+2. Locate the `TRANSFORMATION_PROMPTS` dictionary.
+3. Add a new key-value pair to the dictionary, where the key is the name of the new transformation type, and the value is the prompt template.
+
+### Example
+
+To add a new prompt for summarizing text, you can modify the `TRANSFORMATION_PROMPTS` dictionary as follows:
+
+```python
+TRANSFORMATION_PROMPTS = {
+    "Rephrase": "Please rephrase the following text while keeping the original meaning: \"{}\"",
+    "Translate in English": "Please translate the following text into English: \"{}\"",
+    "Summarize": "Please summarize the following text: \"{}\""
+}
+```
+
+After adding the new prompt, you can select "Summarize" from the dropdown menu in the application to apply the summarization transformation to the clipboard content.
+
 ## License
 
 MIT License
