@@ -19,20 +19,24 @@ class ClipboardViewer:
         self.root.geometry("700x600")
         self.root.minsize(700, 600)
 
+        # Apply a theme for improved styling
+        self.style = ttk.Style()
+        self.style.theme_use('clam')  # Using 'clam' theme for a modern look
+
         # Create main container with padding
-        container = tk.Frame(self.root, padx=10, pady=10)
+        container = ttk.Frame(self.root, padding=(10, 10))
         container.pack(fill=tk.BOTH, expand=True)
 
         # Create top frame for label
-        top_frame = tk.Frame(container)
+        top_frame = ttk.Frame(container)
         top_frame.pack(fill=tk.X)
 
         # Create a label
-        label = tk.Label(top_frame, text="Clipboard Content:", anchor="w")
+        label = ttk.Label(top_frame, text="Clipboard Content:", anchor="w")
         label.pack(fill=tk.X, pady=(0, 5))
 
         # Create middle frame for text box
-        middle_frame = tk.Frame(container)
+        middle_frame = ttk.Frame(container)
         middle_frame.pack(fill=tk.BOTH, expand=True)
 
         # Create a scrolled text widget
@@ -47,36 +51,33 @@ class ClipboardViewer:
         self.text_box.configure(state="disabled")
 
         # Create bottom frame for buttons and model selection
-        self.button_frame = tk.Frame(container, height=30)
+        self.button_frame = ttk.Frame(container, height=30)
         self.button_frame.pack(fill=tk.X, pady=(10, 0))
 
         # Add refresh button
-        self.refresh_button = tk.Button(
+        self.refresh_button = ttk.Button(
             self.button_frame,
             text="Refresh",
             command=self.update_clipboard_content,
-            width=12,
-            height=2
+            width=12
         )
         self.refresh_button.grid(row=0, column=0, padx=5)
 
         self.auto_refresh = False
-        self.auto_refresh_button = tk.Button(
+        self.auto_refresh_button = ttk.Button(
             self.button_frame,
             text="Auto-Refresh: OFF",
             command=self.toggle_auto_refresh,
-            width=15,
-            height=2
+            width=15
         )
         self.auto_refresh_button.grid(row=0, column=1, padx=5)
 
         # Add clear button
-        self.clear_button = tk.Button(
+        self.clear_button = ttk.Button(
             self.button_frame,
             text="Clear",
             command=self.clear_content,
-            width=12,
-            height=2
+            width=12
         )
         self.clear_button.grid(row=0, column=2, padx=5)
 
@@ -96,10 +97,9 @@ class ClipboardViewer:
         # Status bar at the very bottom of main window
         self.status_var = tk.StringVar()
         self.status_var.set("Ready")
-        self.status_bar = tk.Label(
+        self.status_bar = ttk.Label(
             self.root,
             textvariable=self.status_var,
-            bd=1,
             relief=tk.SUNKEN,
             anchor=tk.W
         )
@@ -120,12 +120,11 @@ class ClipboardViewer:
         self.model_menu.grid(row=0, column=4, padx=5)
 
         # Send button
-        self.send_button = tk.Button(
+        self.send_button = ttk.Button(
             self.button_frame,
             text="Send to LLM",
             command=self.send_to_llm,
-            width=15,
-            height=2
+            width=15
         )
         self.send_button.grid(row=0, column=5, padx=5)
 
