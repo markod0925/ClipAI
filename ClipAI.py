@@ -113,8 +113,11 @@ class ClipboardViewer:
         # Fetch and set the model list in a dropdown menu
         self.model_list = []
         self.fetch_models()
+        defaultModel = DEFAULT_MODEL
+        if defaultModel not in self.model_list:
+            defaultModel = self.model_list[0]
 
-        self.selected_model = tk.StringVar(value=DEFAULT_MODEL)
+        self.selected_model = tk.StringVar(value=defaultModel)
         self.model_menu = ttk.Combobox(
             self.button_frame,
             textvariable=self.selected_model,
@@ -149,8 +152,8 @@ class ClipboardViewer:
             if response.status_code == 200:
                 self.model_list = [model['name'] for model in response_tmp['models']]
                 # Add default model to the list if not present
-                if DEFAULT_MODEL not in self.model_list:
-                    self.model_list.insert(0, DEFAULT_MODEL)
+                # if DEFAULT_MODEL not in self.model_list:
+                #     self.model_list.insert(0, DEFAULT_MODEL)
                 self.model_menu.config(values=self.model_list)
             else:
                 self.status_var.set(f"Failed to fetch models: {response.status_code}")
