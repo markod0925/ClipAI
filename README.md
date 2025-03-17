@@ -46,6 +46,10 @@ ClipAI is a clipboard viewer and transformer application built using Tkinter. It
 
 3. Select the desired transformation type and model from the dropdown menus before sending the content.
 
+## UI Customization and Themes
+
+ClipAI uses the 'clam' theme for a modern look. You can customize the UI by modifying the theme settings in the `ClipAI.py` file. The application uses the `ttk.Style` class to apply the theme and style the widgets. You can refer to the [Tkinter documentation](https://docs.python.org/3/library/tkinter.ttk.html#styling) for more information on how to customize the appearance of the widgets.
+
 ## License
 
 MIT License
