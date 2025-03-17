@@ -1,6 +1,6 @@
 # ClipAI
 
-![ClipAI Logo](ClipAI_logo.png)
+![ClipAI Logo](ClipAI_logo.webp)
 
 ClipAI is a clipboard viewer and transformer application built using Tkinter. It allows users to view the current clipboard content, clear it, and send it to a language model for transformations such as rephrasing or translating into English.
 
