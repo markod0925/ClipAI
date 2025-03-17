@@ -10,6 +10,11 @@ OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_URL_MODEL_LIST = "http://localhost:11434/api/tags"  # API endpoint to get models list
 DEFAULT_MODEL = "aya-expanse:latest"
 
+TRANSFORMATION_PROMPTS = {
+    "Rephrase": "Please rephrase the following text while keeping the original meaning: \"{}\"",
+    "Translate in English": "Please translate the following text into English: \"{}\""
+}
+
 class ClipboardViewer:
     def __init__(self, root):
         self.root = root
@@ -82,7 +87,7 @@ class ClipboardViewer:
         self.clear_button.grid(row=0, column=2, padx=5)
 
         # Dropdown menu for selecting transformation type
-        self.transformation_options = ["Rephrase", "Translate in English"]
+        self.transformation_options = list(TRANSFORMATION_PROMPTS.keys())
         self.selected_transformation = tk.StringVar()
         self.selected_transformation.set(self.transformation_options[0])
         self.transformation_menu = ttk.Combobox(
@@ -134,12 +139,6 @@ class ClipboardViewer:
 
         # Initialize with current clipboard content
         self.update_clipboard_content()
-
-        # Define transformation prompts
-        self.transformation_prompts = {
-            "Rephrase": "Please rephrase the following text while keeping the original meaning: \"{}\"",
-            "Translate in English": "Please translate the following text into English: \"{}\""
-        }
 
     def fetch_models(self):
         """Fetch available models from Ollama API"""
@@ -217,7 +216,7 @@ class ClipboardViewer:
             return
 
         selected_option = self.selected_transformation.get()
-        prompt_template = self.transformation_prompts.get(selected_option, "{}")
+        prompt_template = TRANSFORMATION_PROMPTS.get(selected_option, "{}")
         formatted_prompt = prompt_template.format(clipboard_text)
 
         model = self.selected_model.get()
