@@ -71,7 +71,7 @@ class ClipboardViewer:
         self.auto_refresh = False
         self.auto_refresh_button = ttk.Button(
             self.button_frame,
-            text="Auto-Refresh: OFF",
+            text="AutoFresh: OFF",
             command=self.toggle_auto_refresh,
             width=15
         )
@@ -185,12 +185,12 @@ class ClipboardViewer:
         self.auto_refresh = not self.auto_refresh
 
         if self.auto_refresh:
-            self.auto_refresh_button.config(text="Auto-Refresh: ON")
+            self.auto_refresh_button.config(text="AutoFresh: ON")
             self.status_var.set("Auto-refresh enabled")
             self.monitor_thread = threading.Thread(target=self.monitor_clipboard, daemon=True)
             self.monitor_thread.start()
         else:
-            self.auto_refresh_button.config(text="Auto-Refresh: OFF")
+            self.auto_refresh_button.config(text="AutoFresh: OFF")
             self.status_var.set("Auto-refresh disabled")
             self.monitor_thread = None
 
