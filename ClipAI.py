@@ -151,9 +151,7 @@ class ClipboardViewer:
             # print(response_tmp['models'])
             if response.status_code == 200:
                 self.model_list = [model['name'] for model in response_tmp['models']]
-                # Add default model to the list if not present
-                # if DEFAULT_MODEL not in self.model_list:
-                #     self.model_list.insert(0, DEFAULT_MODEL)
+                self.model_list = [model for model in self.model_list if "embed" not in model]
                 self.model_menu.config(values=self.model_list)
             else:
                 self.status_var.set(f"Failed to fetch models: {response.status_code}")
