@@ -143,6 +143,9 @@ class ClipboardViewer:
         # Initialize with current clipboard content
         self.update_clipboard_content()
 
+        # Add a class variable to store the LLM response
+        self.llm_response = ""
+
     def fetch_models(self):
         """Fetch available models from Ollama API"""
         try:
@@ -202,7 +205,7 @@ class ClipboardViewer:
         while self.auto_refresh:
             current_content = pyperclip.paste()
 
-            if current_content != last_content:
+            if current_content != last_content and self.llm_response not in current_content:
                 last_content = current_content
                 # Schedule update on the main thread
                 self.root.after(0, self.update_clipboard_content)
@@ -236,6 +239,8 @@ class ClipboardViewer:
                 self.text_box.insert(tk.END, f"\n\nLLM Response:\n{result}")
                 self.text_box.configure(state="disabled")
                 self.status_var.set(f"Response received from {model}")
+                # Store the LLM response in the class variable
+                self.llm_response = result
             else:
                 self.status_var.set(f"Error {response.status_code}: LLM request failed for {model}")
         except Exception as e:
