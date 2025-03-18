@@ -144,7 +144,7 @@ class ClipboardViewer:
         self.update_clipboard_content()
 
         # Add a class variable to store the LLM response
-        self.llm_response = ""
+        self.llm_response = "Chronometer2849"
 
     def fetch_models(self):
         """Fetch available models from Ollama API"""
