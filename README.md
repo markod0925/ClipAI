@@ -33,8 +33,10 @@ ClipAI is a clipboard viewer and transformer application built using Tkinter. It
    cd ClipAI
    ```
 
-2. Install the required dependencies:
+2. Make an environment and install the required dependencies:
    ```sh
+   python -m venv clipAIenv
+   .\clipAIenv\Scripts\activate
    pip install -r requirements.txt
    ```
 
