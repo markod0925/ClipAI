@@ -4,9 +4,21 @@
   <img src="https://github.com/markod0925/ClipAI/blob/main/images/ClipAI_logo.png" width="18%" />
 </p>
 
-ClipAI is a powerful utility to connect your clipboard directly to an LLM, indeed it is a clipboard viewer and text transformer application built using Tkinter. It allows users to view the current clipboard content, clear it, modify it, and send it to a language model for text transformations such as rephrasing or translating into English or summarizing.
+---
 
-It is your daily companion for any writing-related job.
+**ClipAI** is a powerful utility to connect your **clipboard** 📋 directly to a **LOCAL LLM** 🤖 (Ollama-based) such as **Gemma 3**, **Phi 4**, **Deepseek-V3**, **Qwen**, **Llama 3.x**, etc. It is a **clipboard viewer** 👁️ and **text transformer** 🔁 application built using **Tkinter**. It allows users to:
+
+- View the current clipboard content 👀  
+- Clear it ❌  
+- Modify it ✍️  
+- Send it to a language model for text transformations ✨ such as:
+  - Rephrasing 🔄  
+  - Translating into English 🌐  
+  - Summarizing 📑  
+
+It is your **daily companion** for any **writing-related job** ✏️📄.
+
+The **PC requirements** 🖥️ are mostly related to your preferred LLM, but consider that **Gemma 3-1B-it-qat-q4_0** runs smoothly on a **potato PC** 🥔 (8GB RAM and internal GPU).
 
 ## Screenshots
 
@@ -19,11 +31,12 @@ It is your daily companion for any writing-related job.
 
 ## Features
 
+- **Fully local, all the privacy you need for your data**
 - View current clipboard content
 - Edit directly in the clipboard textbox the input content
 - Clear contents
 - Auto-refresh clipboard content
-- Send clipboard content to a language model
+- Send clipboard content to a language model (thanks to Ollama API)
 - Select different prompts (e.g., Chat Mode, Rephrase, Translate, Summarization)
 - Choose from available language models
 
