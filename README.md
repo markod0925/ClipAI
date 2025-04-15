@@ -2,7 +2,7 @@
 
 ![ClipAI Logo](images/ClipAI_logo.png)
 
-ClipAI is a clipboard viewer and transformer application built using Tkinter. It allows users to view the current clipboard content, clear it, and send it to a language model for transformations such as rephrasing or translating into English.
+ClipAI is a clipboard viewer and text transformer application built using Tkinter. It allows users to view the current clipboard content, clear it, modify it, and send it to a language model for text transformations such as rephrasing or translating into English or summarizing.
 
 ## Screenshot
 
@@ -12,16 +12,16 @@ ClipAI is a clipboard viewer and transformer application built using Tkinter. It
 ## Features
 
 - View current clipboard content
-- Clear clipboard content
+- Edit directly in the clipboard textbox the input content
+- Clear contents
 - Auto-refresh clipboard content
-- Send clipboard content to a language model for transformations
-- Select different transformation types (e.g., rephrase, translate)
+- Send clipboard content to a language model
+- Select different prompts (e.g., Chat Mode, Rephrase, Translate, Summarization)
 - Choose from available language models
 
 ## Dependencies
 
 - Python 3.x
-- Tkinter
 - pyperclip
 - requests
 - Ollama
@@ -61,24 +61,26 @@ ClipAI uses the 'clam' theme for a modern look. You can customize the UI by modi
 
 ## Adding New Prompts
 
-The `TRANSFORMATION_PROMPTS` dictionary in the `ClipAI.py` file is used to store the different transformation prompts that can be applied to the clipboard content. Each key in the dictionary represents a transformation type, and the corresponding value is the prompt template.
+The `prompts.json` is used to store the different prompts that can be applied to the clipboard content. Each key in the dictionary represents the prompt name, and the corresponding value is the prompt template.
 
 ### Step-by-Step Guide to Add New Prompts
 
-1. Open the `ClipAI.py` file in your preferred code editor.
-2. Locate the `TRANSFORMATION_PROMPTS` dictionary.
-3. Add a new key-value pair to the dictionary, where the key is the name of the new transformation type, and the value is the prompt template.
+1. Open the `prompts.json` file in your preferred code editor.
+2. Add a new key-value pair to the dictionary, where the key is the name of the prompt, and the value is the prompt template.
+3. Run `python ClipAI.py`
 
 ### Example
 
-To add a new prompt for summarizing text, you can modify the `TRANSFORMATION_PROMPTS` dictionary as follows:
+To add a new prompt for rewriting the text in short sentences, you can modify the `prompts.json` file as follows:
 
 ```python
-TRANSFORMATION_PROMPTS = {
-    "Rephrase": "Please rephrase the following text while keeping the original meaning: \"{}\"",
-    "Translate in English": "Please translate the following text into English: \"{}\"",
-    "Summarize": "Please summarize the following text: \"{}\""
+{
+    "Chat Mode": "\"{}\"",
+    "Rephrase": "Please rephrase the following text while keeping the original meaning without any preamble: \"{}\"",
+    "Translate in English": "Please translate the following text into English without any preamble: \"{}\"",
+    "Summarize": "Please summarize the following text: \"{}\"",
+    "Rephrase in short sentences": "Please rephrase the following text in short sentences while keeping the original meaning without any preamble: \"{}\""
 }
 ```
 
-After adding the new prompt, you can select "Summarize" from the dropdown menu in the application to apply the summarization transformation to the clipboard content.
+After adding the new prompt, you can select "Rephrase in short sentences" from the dropdown menu in the application to apply the new text transformation to the clipboard content.
