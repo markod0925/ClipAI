@@ -4,7 +4,9 @@
   <img src="https://github.com/markod0925/ClipAI/blob/main/images/ClipAI_logo.png" width="18%" />
 </p>
 
-ClipAI is a clipboard viewer and text transformer application built using Tkinter. It allows users to view the current clipboard content, clear it, modify it, and send it to a language model for text transformations such as rephrasing or translating into English or summarizing.
+ClipAI is a powerful utility to connect your clipboard directly to an LLM, indeed it is a clipboard viewer and text transformer application built using Tkinter. It allows users to view the current clipboard content, clear it, modify it, and send it to a language model for text transformations such as rephrasing or translating into English or summarizing.
+
+It is your daily companion for any writing-related job.
 
 ## Screenshots
 
