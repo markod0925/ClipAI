@@ -28,27 +28,27 @@ ClipAI is a clipboard viewer and text transformer application built using Tkinte
 ## Dependencies
 
 - Python 3.x
+- Ollama
 - pyperclip
 - requests
-- Ollama
 
 ## Installation
 
-1. Clone the repository:
+1. Install Ollama:
+   Follow the instructions on the [Ollama website](https://ollama.com) to install the Ollama API.
+
+2. Clone the repository:
    ```sh
    git clone https://github.com/markod0925/ClipAI.git
    cd ClipAI
    ```
 
-2. Make an environment and install the required dependencies:
+3. Make an environment and install the required dependencies:
    ```sh
    python -m venv clipAIenv
    .\clipAIenv\Scripts\activate
    pip install -r requirements.txt
    ```
-
-3. Install Ollama:
-   Follow the instructions on the [Ollama website](https://ollama.com) to install the Ollama API.
 
 ## Usage
 
