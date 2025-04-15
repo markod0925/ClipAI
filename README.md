@@ -7,6 +7,7 @@ ClipAI is a clipboard viewer and transformer application built using Tkinter. It
 ## Screenshot
 
 ![ClipAI Screenshot](images/ClipAI_screenshot.PNG)
+![ClipAI Screenshot](images/ClipAI_screenshot_2.PNG)
 
 ## Features
 
