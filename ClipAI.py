@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+# from ttkthemes import ThemedTk
 from tkinter import scrolledtext
 import pyperclip
 import threading
@@ -21,8 +22,9 @@ class ClipboardViewer:
 
         # Configure the window
         self.root.title("ClipAI")
-        self.root.geometry("700x600")
-        self.root.minsize(700, 600)
+        self.root.geometry("700x593")
+        self.root.minsize(700, 593)
+        self.root.resizable(False, False)
 
         # Apply a theme for improved styling
         self.style = ttk.Style()
@@ -30,30 +32,33 @@ class ClipboardViewer:
 
         # Create main container with padding
         container = ttk.Frame(self.root, padding=(10, 10))
-        container.pack(fill=tk.BOTH, expand=True)
-
-        # Create top frame for label
-        top_frame = ttk.Frame(container)
-        top_frame.pack(fill=tk.X)
+        # container.pack(fill=tk.BOTH, expand=True)
+        container.pack(fill=tk.BOTH)
 
         # Create a label
-        label = ttk.Label(top_frame, text="Clipboard Content:", anchor="w")
+        label = ttk.Label(container, text="Clipboard Content:", anchor="w")
         label.pack(fill=tk.X, pady=(0, 5))
 
-        # Create middle frame for text box
-        middle_frame = ttk.Frame(container)
-        middle_frame.pack(fill=tk.BOTH, expand=True)
-
-        # Create a scrolled text widget
+        # Create a scrolled text widget for input
         self.text_box = scrolledtext.ScrolledText(
-            middle_frame,
+            container,
             wrap=tk.WORD,
-            font=("Segoe UI", 10)
+            font=("Segoe UI", 10),
+            height = 11
         )
-        self.text_box.pack(fill=tk.BOTH, expand=True)
+        self.text_box.pack(fill=tk.X, pady=(0, 5))
+
+        # Create a scrolled text widget for LLM output
+        self.out_text_box = scrolledtext.ScrolledText(
+            container,
+            wrap=tk.WORD,
+            font=("Segoe UI", 10),
+            height = 17
+        )
+        self.out_text_box.pack(fill=tk.X)
 
         # Make the text box read-only
-        self.text_box.configure(state="disabled")
+        self.out_text_box.configure(state="disabled")
 
         # Create bottom frame for buttons and model selection
         self.button_frame = ttk.Frame(container, height=30)
@@ -162,7 +167,7 @@ class ClipboardViewer:
         """Update the text box with current clipboard content"""
         try:
             clipboard_text = pyperclip.paste()
-            self.text_box.configure(state="normal")
+            # self.text_box.configure(state="normal")
             self.text_box.delete(1.0, tk.END)
             if clipboard_text:
                 self.text_box.insert(tk.END, clipboard_text)
@@ -170,15 +175,15 @@ class ClipboardViewer:
             else:
                 self.text_box.insert(tk.END, "Clipboard is empty or contains non-text content.")
                 self.status_var.set("No text in clipboard")
-            self.text_box.configure(state="disabled")
+            # self.text_box.configure(state="disabled")
         except Exception as e:
             self.status_var.set(f"Error: {str(e)}")
 
     def clear_content(self):
         """Clear the text box"""
-        self.text_box.configure(state="normal")
+        # self.text_box.configure(state="normal")
         self.text_box.delete(1.0, tk.END)
-        self.text_box.configure(state="disabled")
+        # self.text_box.configure(state="disabled")
         self.status_var.set("Cleared")
 
     def toggle_auto_refresh(self):
@@ -211,7 +216,8 @@ class ClipboardViewer:
 
     def send_to_llm(self):
         """Send clipboard text to an Ollama LLM model"""
-        clipboard_text = pyperclip.paste()
+        print(time.time())
+        clipboard_text = self.text_box.get('1.0', tk.END)
         if not clipboard_text.strip():
             self.status_var.set("Clipboard is empty")
             return
@@ -221,20 +227,23 @@ class ClipboardViewer:
         formatted_prompt = prompt_template.format(clipboard_text)
 
         model = self.selected_model.get()
-
         self.status_var.set(f"Sending to {model}...")
+        time.sleep(0.05)
+
+        print(time.time())
 
         try:
             response = requests.post(
                 OLLAMA_URL,
-                json={"model": model, "prompt": formatted_prompt, "keep_alive": "5m", "stream": False}
+                json = {"model": model, "prompt": formatted_prompt, "keep_alive": "5m", "stream": True},
+                stream = True
             )
-
+            print(time.time())
             if response.status_code == 200:
                 result = response.json().get("response", "No response from LLM")
-                self.text_box.configure(state="normal")
-                self.text_box.insert(tk.END, f"\n\nLLM Response:\n{result}")
-                self.text_box.configure(state="disabled")
+                self.out_text_box.configure(state="normal")
+                self.out_text_box.insert(tk.END, f"{result}")
+                self.out_text_box.configure(state="disabled")
                 self.status_var.set(f"Response received from {model}")
             else:
                 self.status_var.set(f"Error {response.status_code}: LLM request failed for {model}")
