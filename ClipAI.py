@@ -23,8 +23,8 @@ class ClipboardViewer:
 
         # Configure the window
         self.root.title("ClipAI")
-        self.root.geometry("700x593")
-        self.root.minsize(700, 593)
+        self.root.geometry("700x608")
+        self.root.minsize(700, 608)
         self.root.resizable(False, False)
 
         # Apply a theme for improved styling
@@ -33,7 +33,6 @@ class ClipboardViewer:
 
         # Create main container with padding
         container = ttk.Frame(self.root, padding=(10, 10))
-        # container.pack(fill=tk.BOTH, expand=True)
         container.pack(fill=tk.BOTH)
 
         # Create a label
@@ -66,30 +65,37 @@ class ClipboardViewer:
         self.button_frame.pack(fill=tk.X, pady=(10, 0))
 
         # Add refresh button
+        imageRefresh = tk.PhotoImage(file = r'images/iconRefresh.png')
         self.refresh_button = ttk.Button(
             self.button_frame,
-            text="Refresh",
+            image=imageRefresh,
             command=self.update_clipboard_content,
             width=12
         )
+        self.refresh_button.image = imageRefresh
         self.refresh_button.grid(row=0, column=0, padx=5)
 
+        # Add AUTO-refresh button
+        self.imageAutoRefreshOFF = tk.PhotoImage(file = r'images/iconToggleRefresh.png')
+        self.imageAutoRefreshON = tk.PhotoImage(file = r'images/iconToggleRefreshON.png')
         self.auto_refresh = False
         self.auto_refresh_button = ttk.Button(
             self.button_frame,
-            text="AutoFresh: OFF",
+            image=self.imageAutoRefreshOFF,
             command=self.toggle_auto_refresh,
             width=15
         )
         self.auto_refresh_button.grid(row=0, column=1, padx=5)
 
         # Add clear button
+        imageClear = tk.PhotoImage(file = r'images/iconClear.png')
         self.clear_button = ttk.Button(
             self.button_frame,
-            text="Clear",
+            image=imageClear,
             command=self.clear_content,
             width=12
         )
+        self.clear_button.image = imageClear
         self.clear_button.grid(row=0, column=2, padx=5)
 
         # Dropdown menu for selecting transformation type
@@ -137,7 +143,7 @@ class ClipboardViewer:
         self.send_button = ttk.Button(
             self.button_frame,
             text="Send to LLM",
-            command=self.send_to_llm,
+            command=self.start_qa_llm,
             width=15
         )
         self.send_button.grid(row=0, column=5, padx=5)
@@ -181,6 +187,7 @@ class ClipboardViewer:
     def clear_content(self):
         """Clear the text box"""
         self.text_box.delete(1.0, tk.END)
+        self.clear_outbox()
         self.status_var.set("Cleared")
 
     def toggle_auto_refresh(self):
@@ -188,12 +195,12 @@ class ClipboardViewer:
         self.auto_refresh = not self.auto_refresh
 
         if self.auto_refresh:
-            self.auto_refresh_button.config(text="AutoFresh: ON")
+            self.auto_refresh_button.config(image = self.imageAutoRefreshON)
             self.status_var.set("Auto-refresh enabled")
             self.monitor_thread = threading.Thread(target=self.monitor_clipboard, daemon=True)
             self.monitor_thread.start()
         else:
-            self.auto_refresh_button.config(text="AutoFresh: OFF")
+            self.auto_refresh_button.config(image = self.imageAutoRefreshOFF)
             self.status_var.set("Auto-refresh disabled")
             self.monitor_thread = None
 
@@ -211,8 +218,7 @@ class ClipboardViewer:
 
             time.sleep(0.5)  # Check every half second
 
-    def send_to_llm(self):
-        self.out_text_box.delete(1.0, tk.END)
+    def send_to_llm(self):        
         """Send clipboard text to an Ollama LLM model"""
         clipboard_text = self.text_box.get('1.0', tk.END)
         if not clipboard_text.strip():
@@ -253,6 +259,17 @@ class ClipboardViewer:
                 self.status_var.set(f"Error {response.status_code}: LLM request failed for {model}")
         except Exception as e:
             self.status_var.set(f"Error: {str(e)}")
+
+    def start_qa_llm(self):
+        self.clear_outbox()
+        thread = threading.Thread(target=self.send_to_llm, daemon=True)
+        thread.start()
+
+    def clear_outbox(self):
+        self.out_text_box.configure(state="normal")
+        self.out_text_box.delete(1.0, tk.END)
+        self.out_text_box.configure(state="disabled")
+
 
 
 def main():
