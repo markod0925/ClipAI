@@ -6,14 +6,15 @@ import pyperclip
 import threading
 import time
 import requests
+import json
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_URL_MODEL_LIST = "http://localhost:11434/api/tags"  # API endpoint to get models list
 DEFAULT_MODEL = "aya-expanse:latest"
 
 TRANSFORMATION_PROMPTS = {
-    "Rephrase": "Please rephrase the following text while keeping the original meaning: \"{}\"",
-    "Translate in English": "Please translate the following text into English: \"{}\""
+    "Rephrase": "Please rephrase the following text while keeping the original meaning without any preamble: \"{}\"",
+    "Translate in English": "Please translate the following text into English without any preamble: \"{}\""
 }
 
 class ClipboardViewer:
@@ -167,7 +168,6 @@ class ClipboardViewer:
         """Update the text box with current clipboard content"""
         try:
             clipboard_text = pyperclip.paste()
-            # self.text_box.configure(state="normal")
             self.text_box.delete(1.0, tk.END)
             if clipboard_text:
                 self.text_box.insert(tk.END, clipboard_text)
@@ -175,15 +175,12 @@ class ClipboardViewer:
             else:
                 self.text_box.insert(tk.END, "Clipboard is empty or contains non-text content.")
                 self.status_var.set("No text in clipboard")
-            # self.text_box.configure(state="disabled")
         except Exception as e:
             self.status_var.set(f"Error: {str(e)}")
 
     def clear_content(self):
         """Clear the text box"""
-        # self.text_box.configure(state="normal")
         self.text_box.delete(1.0, tk.END)
-        # self.text_box.configure(state="disabled")
         self.status_var.set("Cleared")
 
     def toggle_auto_refresh(self):
@@ -215,8 +212,8 @@ class ClipboardViewer:
             time.sleep(0.5)  # Check every half second
 
     def send_to_llm(self):
+        self.out_text_box.delete(1.0, tk.END)
         """Send clipboard text to an Ollama LLM model"""
-        print(time.time())
         clipboard_text = self.text_box.get('1.0', tk.END)
         if not clipboard_text.strip():
             self.status_var.set("Clipboard is empty")
@@ -228,9 +225,7 @@ class ClipboardViewer:
 
         model = self.selected_model.get()
         self.status_var.set(f"Sending to {model}...")
-        time.sleep(0.05)
-
-        print(time.time())
+        self.root.update_idletasks()
 
         try:
             response = requests.post(
@@ -238,17 +233,27 @@ class ClipboardViewer:
                 json = {"model": model, "prompt": formatted_prompt, "keep_alive": "5m", "stream": True},
                 stream = True
             )
-            print(time.time())
             if response.status_code == 200:
-                result = response.json().get("response", "No response from LLM")
-                self.out_text_box.configure(state="normal")
-                self.out_text_box.insert(tk.END, f"{result}")
-                self.out_text_box.configure(state="disabled")
+                self.out_text_box.delete(1.0, tk.END)
+                for line in response.iter_lines():
+                    if line:
+                        data =  json.loads(line.decode())
+                        token = data.get("response", "")
+                        self.out_text_box.configure(state="normal")
+                        self.out_text_box.insert(tk.END, f"{token}")
+                        self.out_text_box.configure(state="disabled")
+                        self.out_text_box.see(tk.END)
+                        self.root.update_idletasks()
+                        
+                        # Stop if we detect the end token
+                        if data.get("done", False):
+                            break                
                 self.status_var.set(f"Response received from {model}")
             else:
                 self.status_var.set(f"Error {response.status_code}: LLM request failed for {model}")
         except Exception as e:
             self.status_var.set(f"Error: {str(e)}")
+
 
 def main():
     root = tk.Tk()
