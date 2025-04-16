@@ -216,10 +216,10 @@ class ClipboardViewer:
 
     def monitor_clipboard(self):
         """Continuously monitor clipboard for changes"""
-        last_content = pyperclip.paste()
+        last_content = self.text_box.get('1.0', tk.END)
 
         while self.auto_refresh:
-            current_content = self.text_box.get('1.0', tk.END)
+            current_content = pyperclip.paste()
 
             if current_content != last_content:
                 last_content = current_content
