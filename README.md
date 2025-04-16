@@ -1,10 +1,8 @@
-# ClipAI
-
 <p align="center">
   <img src="https://github.com/markod0925/ClipAI/blob/main/images/ClipAI_logo.png" width="18%" />
 </p>
 
----
+# ClipAI
 
 **ClipAI** is a simple but powerful utility to connect your **clipboard** 📋 directly to a **Local LLM** 🤖 (Ollama-based) such as **Gemma 3**, **Phi 4**, **Deepseek-V3**, **Qwen**, **Llama 3.x**, etc. It is a **clipboard viewer** and **text transformer** application built using **Python**. 
 
