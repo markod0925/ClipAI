@@ -6,7 +6,7 @@
 
 ---
 
-**ClipAI** is a simple but powerful utility to connect your **clipboard** 📋 directly to a **LOCAL LLM** 🤖 (Ollama-based) such as **Gemma 3**, **Phi 4**, **Deepseek-V3**, **Qwen**, **Llama 3.x**, etc. It is a **clipboard viewer** and **text transformer** application built using **Python**. 
+**ClipAI** is a simple but powerful utility to connect your **clipboard** 📋 directly to a **Local LLM** 🤖 (Ollama-based) such as **Gemma 3**, **Phi 4**, **Deepseek-V3**, **Qwen**, **Llama 3.x**, etc. It is a **clipboard viewer** and **text transformer** application built using **Python**. 
 
 It allows users to:
 - View the current clipboard content 👀  
