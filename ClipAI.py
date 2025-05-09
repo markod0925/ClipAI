@@ -191,14 +191,19 @@ class ClipboardViewer:
         self.model_menu.grid(row=0, column=4, padx=5)
 
         # Send button
-        imageSend = tk.PhotoImage(file = r'images/iconSend.png')
+        self.imageSend = tk.PhotoImage(file=r'images/iconSend.png')
+        self.imageStop = tk.PhotoImage(file=r'images/iconStop.png')
+
         self.send_button = ttk.Button(
             self.button_frame,
-            image=imageSend,
-            command=self.start_qa_llm,
+            image=self.imageSend,
+            command=self.handle_send_click,
             width=15
         )
-        self.send_button.image = imageSend
+        self.send_button.config(image=self.imageSend)
+        self.send_button.image = self.imageSend
+        self.llm_active = False
+        self.llm_response = None
         self.send_button.grid(row=0, column=5, padx=2)
 
         # Configure grid columns
@@ -209,6 +214,16 @@ class ClipboardViewer:
 
         # Initialize with current clipboard content
         self.update_clipboard_content()
+
+
+    def handle_send_click(self):
+        if self.llm_active and self.llm_response:
+            self.llm_active = False
+            self.status_var.set("LLM response stopped by user.")
+            self.llm_response.close()
+            return
+        self.start_qa_llm()
+
 
     def fetch_models(self):
         """Fetch available models from Ollama API"""
@@ -225,6 +240,7 @@ class ClipboardViewer:
         except Exception as e:
             self.status_var.set(f"Error fetching models: {str(e)}")
 
+
     def update_clipboard_content(self):
         """Update the text box with current clipboard content"""
         try:
@@ -239,11 +255,13 @@ class ClipboardViewer:
         except Exception as e:
             self.status_var.set(f"Error: {str(e)}")
 
+
     def clear_content(self):
         """Clear the text box"""
         self.text_box.delete(1.0, tk.END)
         self.clear_outbox()
         self.status_var.set("Cleared")
+
 
     def toggle_auto_refresh(self):
         """Toggle automatic clipboard monitoring"""
@@ -258,6 +276,7 @@ class ClipboardViewer:
             self.auto_refresh_button.config(image = self.imageAutoRefreshOFF)
             self.status_var.set("Auto-refresh disabled")
             self.monitor_thread = None
+
 
     def monitor_clipboard(self):
         """Continuously monitor clipboard for changes"""
@@ -274,6 +293,7 @@ class ClipboardViewer:
             time.sleep(0.5)  # Check every half second
 
     def send_to_llm(self):        
+
         """Send clipboard text to an Ollama LLM model"""
         clipboard_text = self.text_box.get('1.0', tk.END)
         if not clipboard_text.strip():
@@ -294,9 +314,17 @@ class ClipboardViewer:
                 json = {"model": model, "prompt": formatted_prompt, "keep_alive": "5m", "stream": True},
                 stream = True
             )
+
+            self.llm_active = True
+            self.llm_response = response
+            self.send_button.config(image=self.imageStop)
+            self.send_button.image = self.imageStop
+
             if response.status_code == 200:
                 self.out_text_box.delete(1.0, tk.END)
                 for line in response.iter_lines():
+                    if not self.llm_active:
+                        break
                     if line:
                         data =  json.loads(line.decode())
                         token = data.get("response", "")
@@ -313,12 +341,19 @@ class ClipboardViewer:
             else:
                 self.status_var.set(f"Error {response.status_code}: LLM request failed for {model}")
         except Exception as e:
-            self.status_var.set(f"Error: {str(e)}")
+            if self.llm_active:
+                self.status_var.set(f"Error: {str(e)}")
+        finally:
+            self.llm_response = None
+            self.send_button.config(image=self.imageSend)
+            self.send_button.image = self.imageSend            
+
 
     def start_qa_llm(self):
         self.clear_outbox()
         thread = threading.Thread(target=self.send_to_llm, daemon=True)
         thread.start()
+
 
     def clear_outbox(self):
         self.out_text_box.configure(state="normal")
