@@ -1,21 +1,66 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import scrolledtext
+from tkinter import ttk, scrolledtext, messagebox
 import pyperclip
 import threading
 import time
 import requests
 import json
+import os
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
-OLLAMA_URL_MODEL_LIST = "http://localhost:11434/api/tags"  # API endpoint to get models list
-DEFAULT_MODEL = "aya-expanse:latest"
+ollamaURL = "http://localhost:11434/api/"
+defaultModel = "aya-expanse:latest"
 
-with open("prompts.json", "r", encoding="utf-8") as file:
-    TRANSFORMATION_PROMPTS = json.load(file)
+transformationPrompts = None
+
+def core():
+    root = tk.Tk()
+    app = ClipboardViewer(root)
+    root.mainloop()
+
+
+def main():
+
+    global transformationPrompts
+    global ollamaURL
+    global defaultModel
+
+    if os.path.isfile('prompts.json'):
+        with open("prompts.json", "r", encoding="utf-8") as file:
+            transformationPrompts = json.load(file)
+            startCore = True
+    else:
+        show_popup("ERROR: The prompt container file prompts.json does not exist. Please download it from the repo.", "Loading file error")
+        startCore = False
+
+    if os.path.isfile('config.json'):
+        with open("config.json", "r", encoding="utf-8") as file:
+            CONFIGS_DATA = json.load(file)
+            ollamaURL = CONFIGS_DATA["OLLAMA_URL"]
+            defaultModel = CONFIGS_DATA["DEFAULT_MODEL"]
+            startCore = True
+    else:
+        show_popup("WARNING: The configuration file config.json does not exist. Please download it from the repo for better use. Default parameters will be loaded.", "Loading file error")
+        startCore = True
+
+    if startCore:
+        core()
+
+
+def show_popup(message, title="Message"):
+    # Create a hidden root window
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+
+    # Show the message box
+    messagebox.showinfo(title, message)
+
+    # Close the root window after message is shown
+    root.destroy()
+
 
 class ClipboardViewer:
     def __init__(self, root):
+
         self.root = root
 
         # Configure the window
@@ -105,7 +150,7 @@ class ClipboardViewer:
         self.clear_button.grid(row=0, column=2, padx=2)
 
         # Dropdown menu for selecting transformation type
-        self.transformation_options = list(TRANSFORMATION_PROMPTS.keys())
+        self.transformation_options = list(transformationPrompts.keys())
         self.selected_transformation = tk.StringVar()
         self.selected_transformation.set(self.transformation_options[0])
         self.transformation_menu = ttk.Combobox(
@@ -131,11 +176,11 @@ class ClipboardViewer:
         # Fetch and set the model list in a dropdown menu
         self.model_list = []
         self.fetch_models()
-        defaultModel = DEFAULT_MODEL
-        if defaultModel not in self.model_list:
-            defaultModel = self.model_list[0]
+        defaultModelLocal = defaultModel
+        if defaultModelLocal not in self.model_list:
+            defaultModelLocal = self.model_list[0]
 
-        self.selected_model = tk.StringVar(value=defaultModel)
+        self.selected_model = tk.StringVar(value=defaultModelLocal)
         self.model_menu = ttk.Combobox(
             self.button_frame,
             textvariable=self.selected_model,
@@ -168,7 +213,7 @@ class ClipboardViewer:
     def fetch_models(self):
         """Fetch available models from Ollama API"""
         try:
-            response = requests.get(OLLAMA_URL_MODEL_LIST)
+            response = requests.get(ollamaURL + "tags")
             response_tmp = response.json()
             # print(response_tmp['models'])
             if response.status_code == 200:
@@ -236,7 +281,7 @@ class ClipboardViewer:
             return
 
         selected_option = self.selected_transformation.get()
-        prompt_template = TRANSFORMATION_PROMPTS.get(selected_option, "{}")
+        prompt_template = transformationPrompts.get(selected_option, "{}")
         formatted_prompt = prompt_template.format(clipboard_text)
 
         model = self.selected_model.get()
@@ -245,7 +290,7 @@ class ClipboardViewer:
 
         try:
             response = requests.post(
-                OLLAMA_URL,
+                ollamaURL + "generate",
                 json = {"model": model, "prompt": formatted_prompt, "keep_alive": "5m", "stream": True},
                 stream = True
             )
@@ -280,12 +325,6 @@ class ClipboardViewer:
         self.out_text_box.delete(1.0, tk.END)
         self.out_text_box.configure(state="disabled")
 
-
-
-def main():
-    root = tk.Tk()
-    app = ClipboardViewer(root)
-    root.mainloop()
 
 if __name__ == "__main__":
     main()

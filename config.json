@@ -1,0 +1,4 @@
+{
+    "OLLAMA_URL": "http://localhost:11434/api/",
+    "DEFAULT_MODEL": "gemma3:1b-it-qat"
+}
