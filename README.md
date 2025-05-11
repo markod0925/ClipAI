@@ -15,7 +15,7 @@ It allows users to:
   - Translating into English 🌐  
   - Summarizing 📑  
 
-It is your **daily companion** for any **writing-related job** ✏️📄.
+It is your **daily companion** for any **writing-related job** ✏️📄. Easy peasy.
 
 The **PC requirements** 🖥️ are mostly related to your preferred LLM, but consider that **Gemma 3-1B-it-qat-q4_0** runs smoothly on a **potato PC** 🥔 (8GB RAM and internal GPU).
 
