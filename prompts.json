@@ -1,6 +1,6 @@
 {
     "Chat Mode": "\"{}\"",
-    "Rephrase": "Please rephrase the following text while keeping the original meaning without any preamble: \"{}\"",
-    "Translate in English": "Please translate the following text into English without any preamble: \"{}\"",
-    "Summarize": "Please summarize the following text: \"{}\""
+    "Rephrase": "Rephrase the following text in the same language, keeping the original meaning and tone. Do not add explanations or comments: \"{}\"",
+    "Translate in English": "Translate the following text to English accurately and naturally, preserving the original tone and meaning. Do not include explanations or additional comments: \"{}\"",
+    "Summarize": "Summarize the following text in the same language, preserving the main ideas and tone. Do not include explanations or comments: \"{}\""
 }
