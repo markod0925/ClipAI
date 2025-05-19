@@ -1,0 +1,3 @@
+"""
+ClipAI package
+""" 
