@@ -212,3 +212,30 @@ To add a new prompt for rewriting the text in short sentences, you can modify th
     "Rephrase in short sentences": "Please rephrase the following text in short sentences while keeping the original meaning without any preamble: \"{}\""
 }
 ```
+
+## Building Executables
+
+To build standalone executables for Windows, Linux, or macOS:
+
+1. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Run the build script:
+   ```bash
+   python build.py
+   ```
+
+The executables will be created in the `dist` directory, organized by platform:
+- Windows: `dist/windows/ClipAI.exe`
+- Linux: `dist/linux/ClipAI`
+- macOS: `dist/darwin/ClipAI`
+
+Each platform directory contains:
+- The executable file
+- Required configuration files (config.json, prompts.json)
+- Images directory with all icons
+- README.md
+
+Note: To build for a specific platform, you need to run the build script on that platform. Cross-platform building is not supported.
