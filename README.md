@@ -25,17 +25,17 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 
 ## Screenshots
 
-<p align="center">
-  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot.PNG" width="40%" />
+<p align="left">
+  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot.PNG" width="35%" />
 </p>
-<p align="center">
-  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot_2.PNG" width="40%" />
+<p align="right">
+  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot_2.PNG" width="35%" />
 </p>
 
 ## Requirements
 
 - Python 3.8+
-- Ollama running (see ![https://ollama.com/](https://ollama.com/) to install Ollama)
+- Ollama running (see ![](https://ollama.com/) to install Ollama)
 - Required Python packages:
   - pyperclip
   - requests
@@ -72,12 +72,12 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
    ```
 
 ### Option 2 (run executable file, Win Only)
-1. Download the zip file from https://github.com/markod0925/ClipAI/releases
+1. Download the zip file from ![Release](https://github.com/markod0925/ClipAI/releases)
 2. Extract the files
 3. Run the .exe
 
 ### Option 3 (build the executable by yourself and run it)
-1. Follow the instruction ![https://github.com/markod0925/ClipAI/tree/CursorTests#building-executables]here
+1. Follow the instruction ![here](https://github.com/markod0925/ClipAI/tree/CursorTests#building-executables)
 
 ## UI Elements
 
