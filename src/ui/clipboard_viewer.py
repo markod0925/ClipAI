@@ -343,9 +343,8 @@ class ClipboardViewer:
                 self.auto_refresh_button.configure(image=self.auto_refresh_on_image)
                 self.auto_refresh_button.image = self.auto_refresh_on_image  # Keep reference
                 self.status_bar.set(config.STATUS_AUTO_REFRESH_ENABLED)
-                if self.monitor_thread is None or not self.monitor_thread.is_alive(): 
-                    self.monitor_thread = threading.Thread(target=self.monitor_clipboard, daemon=True)
-                    self.monitor_thread.start()
+                self.monitor_thread = threading.Thread(target=self.monitor_clipboard, daemon=True)
+                self.monitor_thread.start()
             else:
                 self.auto_refresh_button.configure(image=self.auto_refresh_off_image)
                 self.auto_refresh_button.image = self.auto_refresh_off_image  # Keep reference
@@ -360,7 +359,7 @@ class ClipboardViewer:
         while self.auto_refresh:
             try:
                 current_content = pyperclip.paste()
-                if current_content != last_content:
+                if current_content != last_content and current_content != self.current_content:
                     last_content = current_content
                     self.root.after(0, self.update_clipboard_content)
                 time.sleep(0.5)
@@ -371,9 +370,8 @@ class ClipboardViewer:
     def start_qa_llm(self):
         """Start the LLM query in a separate thread"""
         self.clear_outbox()
-        if thread is None or not thread.is_alive():
-            thread = threading.Thread(target=self.send_to_llm, daemon=True)
-            thread.start()
+        thread = threading.Thread(target=self.send_to_llm, daemon=True)
+        thread.start()
 
     def send_to_llm(self):
         """Send clipboard text to an Ollama LLM model"""
