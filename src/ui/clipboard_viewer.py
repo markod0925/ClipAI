@@ -115,7 +115,8 @@ class ClipboardViewer:
         self.out_text_box = TextBox(
             output_frame,
             background=config.BACKGROUND_COLOR,
-            height=config.NUM_LINES
+            height=config.NUM_LINES,
+            state='disabled'  # Make the text box read-only
         )
         self.out_text_box.widget.configure(height=exact_height)
         self.out_text_box.grid(row=0, column=0, sticky="nsew")
@@ -136,6 +137,9 @@ class ClipboardViewer:
             spacing1=config.BULLET_SPACING, 
             spacing3=config.BULLET_SPACING
         )
+
+        # Ensure the text box is disabled
+        self.out_text_box.widget.configure(state='disabled')
 
         # Bind right-click event to toggle formatting
         self.out_text_box.bind('<Button-3>', self.toggle_output_view)
@@ -244,6 +248,7 @@ class ClipboardViewer:
         if not self.is_formatted_view and self.current_content:
             try:
                 # First clear the text widget
+                self.out_text_box.widget.configure(state='normal')
                 self.out_text_box.delete(1.0, tk.END)
                 
                 # Parse the markdown content
@@ -264,18 +269,23 @@ class ClipboardViewer:
                     except Exception as e:
                         ErrorHandler.handle_error(e, "Tag Application Error", show_message_box=False)
                 
+                self.out_text_box.widget.configure(state='disabled')
                 self.is_formatted_view = True
             except Exception as e:
+                self.out_text_box.widget.configure(state='disabled')
                 ErrorHandler.handle_error(e, "Formatting Error")
 
     def switch_to_text_view(self):
         """Switch from formatted to plain text view"""
         if self.is_formatted_view and self.current_content:
             try:
+                self.out_text_box.widget.configure(state='normal')
                 self.out_text_box.delete(1.0, tk.END)
                 self.out_text_box.insert(tk.END, self.current_content)
+                self.out_text_box.widget.configure(state='disabled')
                 self.is_formatted_view = False
             except Exception as e:
+                self.out_text_box.widget.configure(state='disabled')
                 ErrorHandler.handle_error(e, "View Switch Error")
 
     def handle_send_click(self):
@@ -331,8 +341,11 @@ class ClipboardViewer:
         try:
             self.current_content = ""
             self.is_formatted_view = False
+            self.out_text_box.widget.configure(state='normal')
             self.out_text_box.delete(1.0, tk.END)
+            self.out_text_box.widget.configure(state='disabled')
         except Exception as e:
+            self.out_text_box.widget.configure(state='disabled')
             ErrorHandler.handle_error(e, "Output Clear Error")
 
     def toggle_auto_refresh(self):
@@ -345,11 +358,13 @@ class ClipboardViewer:
                 self.status_bar.set(config.STATUS_AUTO_REFRESH_ENABLED)
                 self.monitor_thread = threading.Thread(target=self.monitor_clipboard, daemon=True)
                 self.monitor_thread.start()
+                self.text_box.widget.configure(state='disabled')
             else:
                 self.auto_refresh_button.configure(image=self.auto_refresh_off_image)
                 self.auto_refresh_button.image = self.auto_refresh_off_image  # Keep reference
                 self.status_bar.set(config.STATUS_AUTO_REFRESH_DISABLED)
                 self.monitor_thread = None
+                self.text_box.widget.configure(state='normal')
         except Exception as e:
             ErrorHandler.handle_error(e, "Auto-refresh Toggle Error")
 
@@ -359,7 +374,15 @@ class ClipboardViewer:
         while self.auto_refresh:
             try:
                 current_content = pyperclip.paste()
-                if current_content != last_content and current_content != self.current_content:
+                # Only update if clipboard content is:
+                # - Not empty
+                # - Different from last check
+                # - Different from current transformed content
+                # - Different from what's displayed in text box
+                if (current_content != "" and
+                    current_content != last_content and 
+                    current_content != self.current_content and
+                    current_content != self.text_box.get('1.0', tk.END)):
                     last_content = current_content
                     self.root.after(0, self.update_clipboard_content)
                 time.sleep(0.5)
@@ -407,9 +430,11 @@ class ClipboardViewer:
                         self.current_content += token
                         
                         # Update streaming text
+                        self.out_text_box.widget.configure(state='normal')
                         self.out_text_box.delete(1.0, tk.END)
                         self.out_text_box.insert(tk.END, self.current_content)
                         self.out_text_box.see(tk.END)
+                        self.out_text_box.widget.configure(state='disabled')
                         self.root.update_idletasks()
                         
                         # If this is the last token, switch to HTML widget with formatting
