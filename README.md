@@ -23,6 +23,24 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 - **Format Toggle**: Switch between plain text and Markdown formatted views
 - **Copy Output**: Easily copy transformed content back to clipboard
 
+## Table of Contents
+
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Installation](#installation)
+  - [Option 1 (run Python script)](#option-1-run-python-script)
+  - [Option 2 (run executable file, Win Only)](#option-2-run-executable-file-win-only)
+  - [Option 3 (build the executable by yourself and run it)](#option-3-build-the-executable-by-yourself-and-run-it)
+- [UI Elements](#ui-elements)
+- [Configuration](#configuration)
+- [Adding New Prompts](#adding-new-prompts)
+- [Building Executables](#building-executables)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Screenshots
 
 <p align="center">
@@ -75,7 +93,7 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 3. Run the .exe
 
 ### Option 3 (build the executable by yourself and run it)
-1. Follow the instruction [here](https://github.com/markod0925/ClipAI/tree/CursorTests#building-executables)
+1. Follow the instruction [here](#building-executables)
 
 ## UI Elements
 
