@@ -109,6 +109,7 @@ Contains transformation templates for different operations. Each template can in
 - Required Python packages:
   - pyperclip
   - requests
+  - pyinstaller (only to build the project by yourself)
 
 ## Installation
 
