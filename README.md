@@ -23,6 +23,62 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 - **Format Toggle**: Switch between plain text and Markdown formatted views
 - **Copy Output**: Easily copy transformed content back to clipboard
 
+## Screenshots
+
+<p align="center">
+  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot.PNG" width="40%" />
+</p>
+<p align="center">
+  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot_2.PNG" width="40%" />
+</p>
+
+## Requirements
+
+- Python 3.8+
+- Ollama running (see ![https://ollama.com/](https://ollama.com/) to install Ollama)
+- Required Python packages:
+  - pyperclip
+  - requests
+  - pyinstaller (only to build the project by yourself, see below how to do it)
+
+## Usage
+
+1. Copy any text to your clipboard
+2. Select desired transformation type
+3. Choose LLM model
+4. Click Send button or press **Shift+Enter**
+5. View transformed output
+6. Use right-click to toggle formatting
+7. Copy output using the copy button
+
+## Installation
+
+### Option 1 (run Python script)
+1. Clone the repository
+2. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/Mac
+   .venv\Scripts\activate     # Windows
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Configure Ollama and ensure it's running
+5. Run the application:
+   ```bash
+   python run.py
+   ```
+
+### Option 2 (run executable file, Win Only)
+1. Download the zip file from https://github.com/markod0925/ClipAI/releases
+2. Extract the files
+3. Run the .exe
+
+### Option 3 (build the executable by yourself and run it)
+1. Follow the instruction ![https://github.com/markod0925/ClipAI/tree/CursorTests#building-executables]here
+
 ## UI Elements
 
 ### Buttons
@@ -31,7 +87,7 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
    - Manually updates the clipboard content
    - Useful when auto-refresh is disabled
 
-2. **Auto-refresh Toggle** (![](images/iconAutoRefreshOff.png))
+2. **Auto-refresh Toggle** (![](images/iconToggleRefresh.png))
    - Toggles automatic clipboard monitoring
    - Blue icon indicates active monitoring
    - Gray icon indicates manual mode
@@ -102,94 +158,6 @@ Contains transformation templates for different operations. Each template can in
 - User prompt template
 - Example inputs/outputs
 
-## Requirements
-
-- Python 3.8+
-- Ollama running locally
-- Required Python packages:
-  - pyperclip
-  - requests
-  - pyinstaller (only to build the project by yourself)
-
-## Installation
-
-1. Clone the repository
-2. Create a virtual environment:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # Linux/Mac
-   .venv\Scripts\activate     # Windows
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Configure Ollama and ensure it's running
-5. Run the application:
-   ```bash
-   python run.py
-   ```
-
-## Usage
-
-1. Copy any text to your clipboard
-2. Select desired transformation type
-3. Choose LLM model
-4. Click Send button or press **Shift+Enter**
-5. View transformed output
-6. Use right-click to toggle formatting
-7. Copy output using the copy button
-
-## Error Handling
-
-The application includes comprehensive error handling for:
-- Clipboard operations
-- LLM connections
-- Model availability
-- Configuration issues
-- Formatting errors
-
-All errors are displayed in the status bar.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Screenshots
-
-<p align="center">
-  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot.PNG" width="60%" />
-</p>
-<p align="center">
-  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot_2.PNG" width="60%" />
-</p>
-
-## Project Structure
-
-```
-src/
-├── __init__.py
-├── main.py
-├── core/
-│   ├── __init__.py
-│   ├── config.py
-│   └── llm_client.py
-└── ui/
-    ├── __init__.py
-    └── clipboard_viewer.py
-```
-
-## Dependencies
-
-- Python 3.x
-- Ollama
-- pyperclip
-- requests
-
 ## Adding New Prompts
 
 The `prompts.json` is used to store the different prompts that can be applied to the clipboard content. Each key in the dictionary represents the prompt name, and the corresponding value is the prompt template.
@@ -240,3 +208,26 @@ Each platform directory contains:
 - README.md
 
 Note: To build for a specific platform, you need to run the build script on that platform. Cross-platform building is not supported.
+
+## Project Structure
+
+```
+src/
+├── __init__.py
+├── main.py
+├── core/
+│   ├── __init__.py
+│   ├── config.py
+│   └── llm_client.py
+└── ui/
+    ├── __init__.py
+    └── clipboard_viewer.py
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
