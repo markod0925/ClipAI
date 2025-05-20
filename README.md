@@ -29,7 +29,7 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 - [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Usage](#usage)
-- [Installation](#installation)
+- [Installation/Running](#installation)
   - [Option 1 (run Python script)](#option-1-run-python-script)
   - [Option 2 (run executable file, Win Only)](#option-2-run-executable-file-win-only)
   - [Option 3 (build the executable by yourself and run it)](#option-3-build-the-executable-by-yourself-and-run-it)
