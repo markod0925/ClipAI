@@ -90,7 +90,8 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 ### Option 2 (run executable file, Win Only)
 1. Download the zip file from last [Release](https://github.com/markod0925/ClipAI/releases)
 2. Extract the files
-3. Run the .exe
+3. Configure Ollama and ensure it's running
+4. Run the .exe
 
 ### Option 3 (build the executable by yourself and run it)
 1. Follow the instruction [here](#building-executables)
