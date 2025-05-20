@@ -25,17 +25,15 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 
 ## Screenshots
 
-<p align="left">
-  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot.PNG" width="35%" />
-</p>
-<p align="right">
-  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot_2.PNG" width="35%" />
+<p align="center">
+  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot.PNG" width="45%" />
+  <img src="https://github.com/markod0925/ClipAI/raw/main/images/ClipAI_screenshot_2.PNG" width="45%" />
 </p>
 
 ## Requirements
 
 - Python 3.8+
-- Ollama running (see ![](https://ollama.com/) to install Ollama)
+- Ollama running (see [https://ollama.com/](https://ollama.com/) to install Ollama)
 - Required Python packages:
   - pyperclip
   - requests
@@ -72,12 +70,12 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
    ```
 
 ### Option 2 (run executable file, Win Only)
-1. Download the zip file from ![Release](https://github.com/markod0925/ClipAI/releases)
+1. Download the zip file from last [Release](https://github.com/markod0925/ClipAI/releases)
 2. Extract the files
 3. Run the .exe
 
 ### Option 3 (build the executable by yourself and run it)
-1. Follow the instruction ![here](https://github.com/markod0925/ClipAI/tree/CursorTests#building-executables)
+1. Follow the instruction [here](https://github.com/markod0925/ClipAI/tree/CursorTests#building-executables)
 
 ## UI Elements
 
@@ -89,8 +87,8 @@ The **PC requirements** 🖥️ are mostly related to your preferred LLM, but co
 
 2. **Auto-refresh Toggle** (![](images/iconToggleRefresh.png))
    - Toggles automatic clipboard monitoring
-   - Blue icon indicates active monitoring
-   - Gray icon indicates manual mode
+   - ![](images/iconToggleRefreshON.png) indicates active monitoring
+   - ![](images/iconToggleRefresh.png) indicates manual mode
 
 3. **Clear Button** (![](images/iconClear.png))
    - Clears both input and output text areas
