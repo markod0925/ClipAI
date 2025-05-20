@@ -210,16 +210,23 @@ Note: To build for a specific platform, you need to run the build script on that
 ## Project Structure
 
 ```
+run.py
+build.py
+config.json
+prompts.json
 src/
 ├── __init__.py
 ├── main.py
 ├── core/
 │   ├── __init__.py
 │   ├── config.py
-│   └── llm_client.py
+│   ├── error_handler.py
+│   ├── llm_client.py
+│   └── markdown_parser.py
 └── ui/
     ├── __init__.py
-    └── clipboard_viewer.py
+    ├── clipboard_viewer.py
+    └── components.py
 ```
 
 ## Contributing
